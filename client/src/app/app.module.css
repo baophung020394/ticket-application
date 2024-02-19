@@ -1,0 +1,17 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.button {
+  margin: 10px 0;
+}
+
+.button .assign {
+  text-transform: initial;
+}
+
+.button .unassign {
+  text-transform: initial;
+  color: #000;
+}

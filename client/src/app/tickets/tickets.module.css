@@ -1,0 +1,32 @@
+.ticketCardComplete {
+  border-top: 4px solid green;
+  min-height: 248px;
+  flex-direction: column;
+  display: flex;
+  justify-content: space-between;
+}
+
+.ticketCardInComplete {
+  border-top: 4px solid red;
+  min-height: 248px;
+  flex-direction: column;
+  display: flex;
+  justify-content: space-between;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  padding-bottom: 13px !important;
+}
+
+.user p {
+  margin-left: 10px;
+  color: #6161e4;
+  font-weight: 600;
+}
+
+.heading {
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 10px;
+}
