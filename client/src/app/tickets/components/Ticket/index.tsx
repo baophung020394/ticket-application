@@ -10,18 +10,13 @@ import {
   IconButton,
   Menu,
   MenuItem,
-  Select,
   Typography,
 } from '@mui/material';
 import { useCallback, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Popup from '../../../../app/common/Popup';
-import {
-  statusStyleComplete,
-  statusStyleInComplete,
-  styledBetween,
-} from '../../../../constants/styles.common';
+import TicketSelect from '../../../../app/common/TicketSelect';
 import { FormDataAssign } from '../../../../constants/type.common';
 import { convertArrayToRecord, getNameColor } from '../../../../helpers/common';
 import {
@@ -31,6 +26,7 @@ import {
   markTicketInComplete,
 } from '../../../../store/actions/ticketsActions';
 import { RootState, useAppDispatch } from '../../../../store/store';
+import stylesGlobal from '../../../app.module.css';
 import styles from '../../tickets.module.css';
 import TicketAssign from '../Forms/Assign';
 
@@ -91,26 +87,25 @@ function TicketItem(props: TicketsProps) {
     }
   };
 
-  const styleCardContent = {
-    paddingTop: 0,
-  };
-
   return (
-    <Card
-      className={`${
-        ticket.completed
-          ? styles['ticketCardComplete']
-          : styles['ticketCardInComplete']
-      }`}
-    >
+    <Card className={`${styles['ticketCard']} `}>
       <Box>
         <CardHeader
+          className={`${
+            ticket.completed
+              ? styles['ticketCardComplete']
+              : styles['ticketCardInComplete']
+          }`}
           avatar={
             ticket?.assigneeId ? (
               <Avatar sx={{ width: 30, height: 30, bgcolor: color }}>
                 {name}
               </Avatar>
-            ) : null
+            ) : (
+              <Typography component="p" fontSize={14} fontStyle="italic">
+                Unassign
+              </Typography>
+            )
           }
           action={
             <>
@@ -130,7 +125,7 @@ function TicketItem(props: TicketsProps) {
           title={assigneeName}
         />
 
-        <CardContent style={styleCardContent}>
+        <CardContent className={styles['card-content']}>
           <Typography gutterBottom variant="h5" component="div">
             {ticket?.id}
           </Typography>
@@ -140,26 +135,11 @@ function TicketItem(props: TicketsProps) {
         </CardContent>
       </Box>
 
-      <CardActions style={styledBetween}>
+      <CardActions
+        className={`${stylesGlobal['styledBetween']} ${stylesGlobal['statusTicket']}`}
+      >
         <Link to={`/tickets/${ticket.id}`}>Ticket-{ticket.id}</Link>
-        <Select
-          value={`${ticket.completed ? 'complete' : 'incomplete'}`}
-          onChange={() => handleComplete(ticket)}
-          style={
-            ticket?.completed ? statusStyleComplete : statusStyleInComplete
-          }
-        >
-          <MenuItem
-            value="complete"
-            disabled={ticket.completed}
-            data-testid="complete-menu-item"
-          >
-            Complete
-          </MenuItem>
-          <MenuItem value="incomplete" disabled={!ticket.completed}>
-            Incomplete
-          </MenuItem>
-        </Select>
+        <TicketSelect handleComplete={handleComplete} ticket={ticket} />
       </CardActions>
 
       <Popup title="Assign" open={showForm} onClose={handleCloseForm}>

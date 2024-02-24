@@ -1,8 +1,7 @@
-import React from 'react';
-import { TextField, InputAdornment, IconButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import { styledSearch } from '../../../../constants/styles.common';
-
+import { Box, IconButton, InputAdornment, TextField } from '@mui/material';
+import React from 'react';
+import stylesGlobal from '../../../app.module.css';
 interface FilterProps {
   onFilterChange: (value: string) => void;
 }
@@ -14,21 +13,22 @@ const Filter: React.FC<FilterProps> = ({ onFilterChange }) => {
   };
 
   return (
-    <TextField
-      style={styledSearch}
-      label="Search by description..."
-      onChange={handleChange}
-      variant="outlined"
-      InputProps={{
-        endAdornment: (
-          <InputAdornment position="end">
-            <IconButton edge="end" aria-label="search">
-              <SearchIcon />
-            </IconButton>
-          </InputAdornment>
-        ),
-      }}
-    />
+    <Box className={stylesGlobal['styledSearch']}>
+      <TextField
+        label="Search by description..."
+        onChange={handleChange}
+        variant="outlined"
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton edge="end" aria-label="search">
+                <SearchIcon />
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
+      />
+    </Box>
   );
 };
 

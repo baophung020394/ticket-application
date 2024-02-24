@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Autocomplete, Box, TextField } from '@mui/material';
+import { Autocomplete, Box, CircularProgress, TextField } from '@mui/material';
 import Button from '@mui/material/Button';
 import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
@@ -22,6 +22,7 @@ const TicketAssign: React.FC<TicketAssignProps> = ({
   onSubmit,
   assignName,
 }) => {
+  const { loadingAssign } = useSelector((state: RootState) => state.tickets);
   const { users } = useSelector((state: RootState) => state.users);
 
   const { handleSubmit, setValue, control } = useForm<FormDataAssign>({
@@ -30,13 +31,14 @@ const TicketAssign: React.FC<TicketAssignProps> = ({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Box>
+      <Box mb={1}>
         <Controller
           render={({ field }) => {
             return (
               <Autocomplete
                 options={users}
                 getOptionLabel={(option) => option.name}
+                defaultValue={{ name: assignName, id: 1 }}
                 sx={{
                   '& .MuiFormControl-root': {
                     '& .MuiInputBase-root': {
@@ -57,7 +59,8 @@ const TicketAssign: React.FC<TicketAssignProps> = ({
                       {...params}
                       sx={{ fontSize: 14 }}
                       variant="outlined"
-                      label={assignName}
+                      // label={assignName}
+                      // value={'cc'}
                     />
                   );
                 }}
@@ -68,13 +71,19 @@ const TicketAssign: React.FC<TicketAssignProps> = ({
           control={control}
         />
       </Box>
-      <Box className={stylesGlobal['button']}>
+      <Box className={stylesGlobal['buttons']}>
         <Button
           type="submit"
           variant="contained"
-          className={stylesGlobal['assign']}
+          className={stylesGlobal['btn-primary']}
+          disabled={loadingAssign}
         >
           Assign
+          {loadingAssign && (
+            <Box ml={1} display="flex">
+              <CircularProgress size={20} />
+            </Box>
+          )}
         </Button>
       </Box>
     </form>

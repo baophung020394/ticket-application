@@ -19,3 +19,8 @@ export type FormDataAssign = {
   ticketid?: number;
   assigneeId?: yup.Maybe<number>;
 };
+
+export type MenuType = {
+  label: string;
+  link: string;
+};

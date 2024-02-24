@@ -1,5 +1,5 @@
 import { Ticket } from '@acme/shared-models';
-import { Button, Grid, Typography } from '@mui/material';
+import { Box, Button, Grid, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { FormAssignTicket, FormTicket } from '../../constants/type.common';
@@ -12,6 +12,7 @@ import TopProgressBar from '../common/TopProgressBar';
 import Filter from './components/Filter';
 import TicketForm from './components/Forms/Add';
 import ListTicket from './components/List';
+import stylesGlobal from '../app.module.css';
 
 export function Tickets() {
   const { tickets } = useSelector((state: RootState) => state.tickets);
@@ -67,7 +68,7 @@ export function Tickets() {
   }, [tickets, dispatch]);
 
   return (
-    <Grid container pt={2} height="100%">
+    <Grid container pt={2} pb={2} height="100%">
       <Grid
         item
         xs={12}
@@ -79,9 +80,15 @@ export function Tickets() {
           Tickets
         </Typography>
 
-        <Button variant="outlined" onClick={handleAddClick}>
-          Add
-        </Button>
+        <Box className={stylesGlobal['buttons']}>
+          <Button
+            variant="contained"
+            onClick={handleAddClick}
+            className={stylesGlobal['btn-primary']}
+          >
+            Add
+          </Button>
+        </Box>
       </Grid>
 
       <Grid item xs={12}>

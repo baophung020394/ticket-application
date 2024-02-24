@@ -9,7 +9,8 @@ import { useSelector } from 'react-redux';
 import * as yup from 'yup';
 import { RootState } from '../../../../store/store';
 import { FormData } from '../../../../constants/type.common';
-import { Box } from '@mui/material';
+import { Box, CircularProgress } from '@mui/material';
+import stylesGlobal from '../../../app.module.css';
 
 const schema = yup.object().shape({
   description: yup.string().required('Description is required'),
@@ -18,6 +19,7 @@ const schema = yup.object().shape({
 const TicketForm: React.FC<{ onSubmit: SubmitHandler<FormData> }> = ({
   onSubmit,
 }) => {
+  const { loading } = useSelector((state: RootState) => state.tickets);
   const { users } = useSelector((state: RootState) => state.users);
   const [selectedUser, setSelectedUser] = useState<number | 'default'>(
     'default'
@@ -30,7 +32,7 @@ const TicketForm: React.FC<{ onSubmit: SubmitHandler<FormData> }> = ({
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { isLoading, errors },
   } = useForm<FormData>({
     resolver: yupResolver(schema),
   });
@@ -46,6 +48,7 @@ const TicketForm: React.FC<{ onSubmit: SubmitHandler<FormData> }> = ({
 
   const styledField = { marginBottom: '20px' };
 
+  console.log('loading', loading);
   return (
     <form onSubmit={handleSubmit(handleOnSubmit)}>
       <Box style={styledField}>
@@ -73,9 +76,21 @@ const TicketForm: React.FC<{ onSubmit: SubmitHandler<FormData> }> = ({
           ))}
         </Select>
       </Box>
-      <Button type="submit" variant="contained" color="primary">
-        Add
-      </Button>
+      <Box className={stylesGlobal['buttons']}>
+        <Button
+          type="submit"
+          variant="contained"
+          className={stylesGlobal['btn-primary']}
+          disabled={loading}
+        >
+          Add
+          {loading && (
+            <Box ml={1} display="flex">
+              <CircularProgress size={20} />
+            </Box>
+          )}
+        </Button>
+      </Box>
     </form>
   );
 };
