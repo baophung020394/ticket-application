@@ -2,10 +2,14 @@ import { createSlice } from '@reduxjs/toolkit';
 
 interface CommonState {
   loading: boolean;
+  loadingMenu: boolean;
+  numberPerPage: number;
 }
 
 const initialState: CommonState = {
   loading: false,
+  loadingMenu: true,
+  numberPerPage: 10,
 };
 
 const commonsSlice = createSlice({
@@ -15,9 +19,16 @@ const commonsSlice = createSlice({
     setLoadingGlobal: (state, action) => {
       state.loading = action.payload;
     },
+    openMenu: (state, action) => {
+      state.loadingMenu = action.payload;
+    },
+    setNumberPerPage: (state, action) => {
+      state.numberPerPage = action.payload;
+    },
   },
 });
 
-export const { setLoadingGlobal } = commonsSlice.actions;
+export const { setLoadingGlobal, openMenu, setNumberPerPage } =
+  commonsSlice.actions;
 
 export default commonsSlice.reducer;

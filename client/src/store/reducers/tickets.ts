@@ -14,6 +14,8 @@ import {
 interface TicketsState {
   tickets: Ticket[];
   loading: boolean;
+  loadingAssign: boolean;
+  loadingUnAssign: boolean;
   error: string | null;
 }
 
@@ -21,6 +23,8 @@ const initialState: TicketsState = {
   tickets: [],
   loading: false,
   error: null,
+  loadingAssign: false,
+  loadingUnAssign: false,
 };
 
 const ticketsSlice = createSlice({
@@ -89,12 +93,12 @@ const ticketsSlice = createSlice({
           action.error.message || 'Failed to mark ticket incomplete';
       })
       .addCase(assignTicket.pending, (state) => {
-        state.loading = true;
+        state.loadingAssign = true;
         state.error = null;
       })
       .addCase(assignTicket.fulfilled, (state, action) => {
         const updatedTicket = action.payload;
-        state.loading = false;
+        state.loadingAssign = false;
         state.tickets = state.tickets.map((ticket) => {
           return ticket.id === updatedTicket.ticketId
             ? { ...ticket, assigneeId: updatedTicket.assigneeId }
@@ -102,16 +106,16 @@ const ticketsSlice = createSlice({
         });
       })
       .addCase(assignTicket.rejected, (state, action) => {
-        state.loading = false;
+        state.loadingAssign = false;
         state.error = action.error.message || 'Failed to assign ticket';
       })
       .addCase(unAssignTicket.pending, (state) => {
-        state.loading = true;
+        state.loadingUnAssign = true;
         state.error = null;
       })
       .addCase(unAssignTicket.fulfilled, (state, action) => {
         const updatedTicket = action.payload;
-        state.loading = false;
+        state.loadingUnAssign = false;
         state.tickets = state.tickets.map((ticket) => {
           return ticket.id === updatedTicket.ticketId
             ? { ...ticket, assigneeId: updatedTicket.assigneeId }
@@ -119,7 +123,7 @@ const ticketsSlice = createSlice({
         });
       })
       .addCase(unAssignTicket.rejected, (state, action) => {
-        state.loading = false;
+        state.loadingUnAssign = false;
         state.error = action.error.message || 'Failed to assign ticket';
       })
       .addCase(filterTicket.pending, (state) => {
